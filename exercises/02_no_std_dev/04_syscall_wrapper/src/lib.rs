@@ -166,11 +166,14 @@ pub fn sys_exit(code: i32) -> ! {
 // ============================================================
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     // ---- ABI knowledge tests (run on any platform) ----
 
     #[test]
+    #[timeout(3000)]
     fn test_x86_64_instruction() {
         let abi = x86_64_abi();
         assert_eq!(abi.arch, "x86_64");
@@ -178,6 +181,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_x86_64_registers() {
         let abi = x86_64_abi();
         assert_eq!(abi.id_reg, "rax");
@@ -190,6 +194,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_x86_64_clobbered() {
         let abi = x86_64_abi();
         assert!(
@@ -199,6 +204,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_x86_64_syscall_numbers() {
         let abi = x86_64_abi();
         assert_eq!(abi.sys_write, 1);
@@ -208,6 +214,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_aarch64_instruction() {
         let abi = aarch64_abi();
         assert_eq!(abi.arch, "aarch64");
@@ -215,6 +222,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_aarch64_registers() {
         let abi = aarch64_abi();
         assert_eq!(abi.id_reg, "x8");
@@ -227,6 +235,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_aarch64_clobbered() {
         let abi = aarch64_abi();
         assert!(
@@ -236,6 +245,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_aarch64_syscall_numbers() {
         let abi = aarch64_abi();
         assert_eq!(abi.sys_write, 64);
@@ -245,6 +255,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_riscv64_instruction() {
         let abi = riscv64_abi();
         assert_eq!(abi.arch, "riscv64");
@@ -252,6 +263,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_riscv64_registers() {
         let abi = riscv64_abi();
         assert_eq!(abi.id_reg, "a7");
@@ -264,6 +276,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_riscv64_clobbered() {
         let abi = riscv64_abi();
         assert!(
@@ -273,6 +286,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_riscv64_syscall_numbers() {
         let abi = riscv64_abi();
         assert_eq!(abi.sys_write, 64);
@@ -282,6 +296,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_aarch64_riscv64_share_numbers() {
         let aarch64 = aarch64_abi();
         let riscv64 = riscv64_abi();
@@ -301,6 +316,7 @@ mod tests {
         use super::*;
 
         #[test]
+    #[timeout(3000)]
         fn test_sys_write_stdout() {
             let msg = b"[syscall_wrapper] sys_write test\n";
             let ret = sys_write(1, msg);
@@ -312,6 +328,7 @@ mod tests {
         }
 
         #[test]
+    #[timeout(3000)]
         fn test_sys_write_stderr() {
             let msg = b"[syscall_wrapper] stderr test\n";
             let ret = sys_write(2, msg);
@@ -319,12 +336,14 @@ mod tests {
         }
 
         #[test]
+    #[timeout(3000)]
         fn test_sys_write_invalid_fd() {
             let ret = sys_write(999, b"hello");
             assert!(ret < 0, "invalid fd should return negative, got {ret}");
         }
 
         #[test]
+    #[timeout(3000)]
         fn test_sys_close_invalid_fd() {
             let ret = sys_close(999);
             assert!(ret < 0, "closing invalid fd should return negative");

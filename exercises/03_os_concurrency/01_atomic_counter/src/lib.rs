@@ -68,11 +68,14 @@ impl AtomicCounter {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use std::sync::Arc;
     use std::thread;
 
     #[test]
+    #[timeout(3000)]
     fn test_basic_ops() {
         let c = AtomicCounter::new(0);
         assert_eq!(c.increment(), 0);
@@ -83,6 +86,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_cas_success() {
         let c = AtomicCounter::new(10);
         assert_eq!(c.compare_and_swap(10, 20), Ok(10));
@@ -90,6 +94,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_cas_failure() {
         let c = AtomicCounter::new(10);
         assert_eq!(c.compare_and_swap(5, 20), Err(10));
@@ -97,6 +102,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_fetch_multiply() {
         let c = AtomicCounter::new(3);
         let old = c.fetch_multiply(4);
@@ -105,6 +111,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_concurrent_increment() {
         let counter = Arc::new(AtomicCounter::new(0));
         let mut handles = vec![];

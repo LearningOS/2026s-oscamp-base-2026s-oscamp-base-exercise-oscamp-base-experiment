@@ -37,30 +37,37 @@ pub fn concurrent_collect(n_threads: usize) -> Vec<usize> {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[test]
+    #[timeout(3000)]
     fn test_counter_single_thread() {
         assert_eq!(concurrent_counter(1, 100), 100);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_counter_multi_thread() {
         assert_eq!(concurrent_counter(10, 100), 1000);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_counter_zero() {
         assert_eq!(concurrent_counter(5, 0), 0);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_collect() {
         let result = concurrent_collect(5);
         assert_eq!(result, vec![0, 1, 2, 3, 4]);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_collect_single() {
         assert_eq!(concurrent_collect(1), vec![0]);
     }

@@ -188,6 +188,8 @@ fn thread_finished() {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use std::sync::atomic::{AtomicU32, Ordering};
     use std::sync::Mutex;
@@ -212,6 +214,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_scheduler_runs_all() {
         let _guard = TEST_LOCK.lock().unwrap();
         EXEC_ORDER.store(0, Ordering::SeqCst);
@@ -237,6 +240,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_single_thread() {
         let _guard = TEST_LOCK.lock().unwrap();
         SIMPLE_FLAG.store(0, Ordering::SeqCst);

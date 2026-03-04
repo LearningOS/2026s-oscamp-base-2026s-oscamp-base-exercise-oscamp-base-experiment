@@ -98,6 +98,8 @@ impl Default for FdTable {
 // ============================================================
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use std::sync::Mutex;
 
@@ -127,6 +129,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_alloc_basic() {
         let mut table = FdTable::new();
         let fd = table.alloc(MockFile::new(0));
@@ -136,6 +139,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_get() {
         let mut table = FdTable::new();
         let file = MockFile::new(42);
@@ -148,6 +152,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_get_invalid() {
         let table = FdTable::new();
         assert!(table.get(0).is_none());
@@ -155,6 +160,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_close_and_reuse() {
         let mut table = FdTable::new();
         let fd0 = table.alloc(MockFile::new(0)); // fd=0
@@ -175,6 +181,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_close_invalid() {
         let mut table = FdTable::new();
         assert!(
@@ -184,6 +191,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_count() {
         let mut table = FdTable::new();
         assert_eq!(table.count(), 0);
@@ -197,6 +205,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_write_through_fd() {
         let mut table = FdTable::new();
         let file = MockFile::new(0);

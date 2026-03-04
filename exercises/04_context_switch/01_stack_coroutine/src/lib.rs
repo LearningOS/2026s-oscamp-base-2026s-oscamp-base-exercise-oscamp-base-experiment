@@ -85,6 +85,8 @@ pub fn alloc_stack() -> (Vec<u8>, usize) {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use std::sync::atomic::{AtomicU32, Ordering};
 
@@ -98,6 +100,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_alloc_stack() {
         let (buf, top) = alloc_stack();
         assert_eq!(top, buf.as_ptr() as usize + STACK_SIZE);
@@ -105,6 +108,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_context_init() {
         let (buf, top) = alloc_stack();
         let _ = buf;
@@ -116,6 +120,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_switch_to_task() {
         COUNTER.store(0, Ordering::SeqCst);
 

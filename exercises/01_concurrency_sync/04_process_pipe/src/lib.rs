@@ -172,43 +172,52 @@ pub fn pipe_through_grep(pattern: &str, input: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[test]
+    #[timeout(3000)]
     fn test_run_echo() {
         let output = run_command("echo", &["hello"]);
         assert_eq!(output.trim(), "hello");
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_run_with_args() {
         let output = run_command("echo", &["-n", "no newline"]);
         assert_eq!(output, "no newline");
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_pipe_cat() {
         let output = pipe_through_cat("hello pipe!");
         assert_eq!(output, "hello pipe!");
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_pipe_multiline() {
         let input = "line1\nline2\nline3";
         assert_eq!(pipe_through_cat(input), input);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_exit_code_success() {
         assert_eq!(get_exit_code("true"), 0);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_exit_code_failure() {
         assert_eq!(get_exit_code("false"), 1);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_run_command_with_result_success() {
         let result = run_command_with_result("echo", &["hello"]);
         assert!(result.is_ok());
@@ -216,6 +225,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_run_command_with_result_nonexistent() {
         let result = run_command_with_result("nonexistent_command_xyz", &[]);
         // Should be an error because command not found
@@ -223,6 +233,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_pipe_through_grep_basic() {
         let input = "apple\nbanana\ncherry\n";
         let output = pipe_through_grep("a", input);
@@ -231,6 +242,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_pipe_through_grep_no_match() {
         let input = "apple\nbanana\ncherry\n";
         let output = pipe_through_grep("z", input);
@@ -239,6 +251,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_pipe_through_grep_multiline() {
         let input = "first line\nsecond line\nthird line\n";
         let output = pipe_through_grep("second", input);

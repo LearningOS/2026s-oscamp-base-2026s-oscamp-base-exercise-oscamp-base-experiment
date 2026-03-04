@@ -140,6 +140,8 @@ unsafe impl GlobalAlloc for FreeListAllocator {
 // ============================================================
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     const HEAP_SIZE: usize = 4096;
@@ -152,6 +154,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_alloc_basic() {
         let (alloc, _heap) = make_allocator();
         let layout = Layout::from_size_align(32, 8).unwrap();
@@ -160,6 +163,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_alloc_alignment() {
         let (alloc, _heap) = make_allocator();
         for align in [1, 2, 4, 8, 16] {
@@ -171,6 +175,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_dealloc_and_reuse() {
         let (alloc, _heap) = make_allocator();
         let layout = Layout::from_size_align(64, 8).unwrap();
@@ -186,6 +191,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_multiple_alloc_dealloc() {
         let (alloc, _heap) = make_allocator();
         let layout = Layout::from_size_align(128, 8).unwrap();
@@ -204,6 +210,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_oom() {
         let (alloc, _heap) = make_allocator();
         let layout = Layout::from_size_align(HEAP_SIZE + 1, 1).unwrap();

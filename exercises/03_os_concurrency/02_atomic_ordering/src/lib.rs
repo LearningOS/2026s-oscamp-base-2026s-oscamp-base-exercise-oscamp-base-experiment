@@ -95,11 +95,14 @@ impl OnceCell {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use std::sync::Arc;
     use std::thread;
 
     #[test]
+    #[timeout(3000)]
     fn test_flag_channel() {
         let ch = Arc::new(FlagChannel::new());
         let ch2 = Arc::clone(&ch);
@@ -116,6 +119,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_flag_channel_large_value() {
         let ch = Arc::new(FlagChannel::new());
         let ch2 = Arc::clone(&ch);
@@ -130,6 +134,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_once_cell_init_once() {
         let cell = OnceCell::new();
         assert!(cell.init(42));
@@ -138,12 +143,14 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_once_cell_not_initialized() {
         let cell = OnceCell::new();
         assert_eq!(cell.get(), None);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_once_cell_concurrent() {
         let cell = Arc::new(OnceCell::new());
         let mut handles = vec![];

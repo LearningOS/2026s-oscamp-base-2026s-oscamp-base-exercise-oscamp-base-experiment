@@ -2,3 +2,7 @@
 name = "pte_flags"
 version = "0.1.0"
 edition = "2021"
+
+[dependencies]
+ntest_timeout = "0.9.5"
+

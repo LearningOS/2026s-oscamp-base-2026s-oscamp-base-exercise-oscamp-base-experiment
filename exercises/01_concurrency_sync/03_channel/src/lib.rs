@@ -35,9 +35,12 @@ pub fn multi_producer(n_producers: usize) -> Vec<String> {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[test]
+    #[timeout(3000)]
     fn test_simple_send_recv() {
         let items = vec!["hello".into(), "world".into(), "rust".into()];
         let result = simple_send_recv(items.clone());
@@ -45,12 +48,14 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_simple_empty() {
         let result = simple_send_recv(vec![]);
         assert!(result.is_empty());
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_multi_producer() {
         let result = multi_producer(3);
         assert_eq!(
@@ -64,6 +69,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_multi_producer_single() {
         let result = multi_producer(1);
         assert_eq!(result, vec!["msg from 0".to_string()]);
