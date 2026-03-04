@@ -85,9 +85,12 @@ pub unsafe extern "C" fn my_strcmp(s1: *const u8, s2: *const u8) -> i32 {
 // ============================================================
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[test]
+    #[timeout(3000)]
     fn test_memcpy_basic() {
         let src = [1u8, 2, 3, 4, 5];
         let mut dst = [0u8; 5];
@@ -96,6 +99,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_memcpy_zero_len() {
         let src = [0xFFu8; 4];
         let mut dst = [0u8; 4];
@@ -104,6 +108,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_memset_basic() {
         let mut buf = [0u8; 8];
         unsafe { my_memset(buf.as_mut_ptr(), 0xAB, 8) };
@@ -111,6 +116,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_memset_partial() {
         let mut buf = [0u8; 8];
         unsafe { my_memset(buf.as_mut_ptr(), 0xFF, 4) };
@@ -119,6 +125,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_memmove_no_overlap() {
         let src = [1u8, 2, 3, 4];
         let mut dst = [0u8; 4];
@@ -127,6 +134,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_memmove_overlap_forward() {
         // Copy buf[0..4] to buf[1..5], shifting right by 1
         let mut buf = [1u8, 2, 3, 4, 5];
@@ -135,18 +143,21 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_strlen_basic() {
         let s = b"hello\0";
         assert_eq!(unsafe { my_strlen(s.as_ptr()) }, 5);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_strlen_empty() {
         let s = b"\0";
         assert_eq!(unsafe { my_strlen(s.as_ptr()) }, 0);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_strcmp_equal() {
         let a = b"hello\0";
         let b = b"hello\0";
@@ -154,6 +165,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_strcmp_less() {
         let a = b"abc\0";
         let b = b"abd\0";
@@ -161,6 +173,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_strcmp_greater() {
         let a = b"abd\0";
         let b = b"abc\0";

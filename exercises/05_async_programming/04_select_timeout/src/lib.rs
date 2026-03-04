@@ -39,15 +39,19 @@ where
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_timeout_success() {
         let result = with_timeout(async { 42 }, 100).await;
         assert_eq!(result, Some(42));
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_timeout_expired() {
         let result = with_timeout(
             async {
@@ -61,6 +65,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_race_first_wins() {
         let result = race(
             async {
@@ -77,6 +82,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_race_second_wins() {
         let result = race(
             async {

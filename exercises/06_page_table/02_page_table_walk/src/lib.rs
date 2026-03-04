@@ -121,9 +121,12 @@ pub fn make_pa(ppn: u32, offset: u32) -> u32 {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[test]
+    #[timeout(3000)]
     fn test_va_decompose() {
         // 虚拟地址 0x12345678
         // VPN = 0x12345, offset = 0x678
@@ -132,12 +135,14 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_va_decompose_zero() {
         assert_eq!(va_to_vpn(0), 0);
         assert_eq!(va_to_offset(0), 0);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_va_decompose_page_boundary() {
         // 正好在页边界，offset 应为 0
         assert_eq!(va_to_vpn(0x3000), 3);
@@ -145,6 +150,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_make_pa() {
         assert_eq!(make_pa(0x80, 0x100), 0x80 * 4096 + 0x100);
         assert_eq!(make_pa(0, 0), 0);
@@ -152,6 +158,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_map_and_lookup() {
         let mut pt = SingleLevelPageTable::new(1024);
         pt.map(5, 100, PTE_VALID | PTE_READ);
@@ -162,12 +169,14 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_lookup_unmapped() {
         let pt = SingleLevelPageTable::new(1024);
         assert!(pt.lookup(0).is_none());
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_unmap() {
         let mut pt = SingleLevelPageTable::new(1024);
         pt.map(10, 200, PTE_VALID | PTE_READ);
@@ -178,6 +187,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_translate_basic() {
         let mut pt = SingleLevelPageTable::new(1024);
         // 虚拟页 1 -> 物理页 0x80
@@ -190,12 +200,14 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_translate_page_fault() {
         let pt = SingleLevelPageTable::new(1024);
         assert_eq!(pt.translate(0x5000, false), TranslateResult::PageFault);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_translate_write_permission() {
         let mut pt = SingleLevelPageTable::new(1024);
         // 只读页
@@ -214,6 +226,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_translate_writable_page() {
         let mut pt = SingleLevelPageTable::new(1024);
         pt.map(3, 0xA0, PTE_VALID | PTE_READ | PTE_WRITE);
@@ -226,6 +239,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_translate_invalid_entry() {
         let mut pt = SingleLevelPageTable::new(1024);
         // 映射了但 VALID 未置位
@@ -234,6 +248,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_multiple_mappings() {
         let mut pt = SingleLevelPageTable::new(1024);
         pt.map(0, 0x10, PTE_VALID | PTE_READ);

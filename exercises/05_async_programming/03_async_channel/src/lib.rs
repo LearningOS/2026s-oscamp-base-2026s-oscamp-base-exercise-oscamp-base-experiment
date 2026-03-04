@@ -36,9 +36,12 @@ pub async fn fan_in(n_producers: usize) -> Vec<String> {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_producer_consumer() {
         let items = vec!["hello".into(), "async".into(), "world".into()];
         let result = producer_consumer(items.clone()).await;
@@ -46,12 +49,14 @@ mod tests {
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_producer_consumer_empty() {
         let result = producer_consumer(vec![]).await;
         assert!(result.is_empty());
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_fan_in() {
         let result = fan_in(3).await;
         assert_eq!(
@@ -65,6 +70,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_fan_in_single() {
         let result = fan_in(1).await;
         assert_eq!(result, vec!["producer 0: message"]);

@@ -63,26 +63,32 @@ impl Future for YieldOnce {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_countdown_zero() {
         let result = CountDown::new(0).await;
         assert_eq!(result, "liftoff!");
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_countdown_three() {
         let result = CountDown::new(3).await;
         assert_eq!(result, "liftoff!");
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_yield_once() {
         YieldOnce::new().await;
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_countdown_large() {
         let result = CountDown::new(100).await;
         assert_eq!(result, "liftoff!");

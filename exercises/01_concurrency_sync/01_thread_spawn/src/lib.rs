@@ -238,25 +238,31 @@ pub fn handle_panic(value: i32, should_panic: bool) -> Result<i32, ()> {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[test]
+    #[timeout(3000)]
     fn test_double_basic() {
         let nums = vec![1, 2, 3, 4, 5];
         assert_eq!(double_in_thread(nums), vec![2, 4, 6, 8, 10]);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_double_empty() {
         assert_eq!(double_in_thread(vec![]), vec![]);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_double_negative() {
         assert_eq!(double_in_thread(vec![-1, 0, 1]), vec![-2, 0, 2]);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_parallel_sum() {
         let a = vec![1, 2, 3];
         let b = vec![10, 20, 30];
@@ -264,12 +270,14 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_parallel_sum_empty() {
         assert_eq!(parallel_sum(vec![], vec![]), (0, 0));
     }
 
     // Advanced exercise tests
     #[test]
+    #[timeout(3000)]
     fn test_named_sleeper() {
         // The thread should sleep a short time; we just verify it returns the correct value.
         let result = named_sleeper(42, 10); // sleep 10 ms
@@ -277,6 +285,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_thread_local() {
         // Each thread has its own counter, so spawning two threads and calling increment
         // in each should give each thread its own sequence.
@@ -303,6 +312,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_scoped_slice_sum() {
         let a = [1, 2, 3];
         let b = [10, 20, 30];
@@ -315,12 +325,14 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_handle_panic_ok() {
         let result = handle_panic(100, false);
         assert_eq!(result, Ok(100));
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_handle_panic_error() {
         let result = handle_panic(100, true);
         assert_eq!(result, Err(()));

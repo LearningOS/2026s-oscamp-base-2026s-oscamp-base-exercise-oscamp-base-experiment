@@ -200,11 +200,14 @@ impl Mmu {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     // ──────── TLB 基础测试 ────────
 
     #[test]
+    #[timeout(3000)]
     fn test_tlb_empty_lookup() {
         let mut tlb = Tlb::new(4);
         assert_eq!(tlb.lookup(0x100, 0), None);
@@ -213,6 +216,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_tlb_insert_and_lookup() {
         let mut tlb = Tlb::new(4);
         tlb.insert(0x100, 0x200, 1, 0x7);
@@ -221,6 +225,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_tlb_asid_isolation() {
         let mut tlb = Tlb::new(4);
         tlb.insert(0x100, 0x200, 1, 0x7);
@@ -232,6 +237,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_tlb_miss_wrong_asid() {
         let mut tlb = Tlb::new(4);
         tlb.insert(0x100, 0x200, 1, 0x7);
@@ -242,6 +248,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_tlb_fifo_eviction() {
         let mut tlb = Tlb::new(2); // 只有 2 个槽位
         tlb.insert(0x10, 0x20, 0, 0x7);
@@ -257,6 +264,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_tlb_update_existing() {
         let mut tlb = Tlb::new(4);
         tlb.insert(0x100, 0x200, 1, 0x3);
@@ -267,6 +275,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_tlb_valid_count() {
         let mut tlb = Tlb::new(4);
         assert_eq!(tlb.valid_count(), 0);
@@ -281,6 +290,7 @@ mod tests {
     // ──────── TLB 刷新测试 ────────
 
     #[test]
+    #[timeout(3000)]
     fn test_flush_all() {
         let mut tlb = Tlb::new(4);
         tlb.insert(0x1, 0x10, 0, 0x7);
@@ -294,6 +304,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_flush_by_vpn() {
         let mut tlb = Tlb::new(4);
         tlb.insert(0x100, 0x200, 1, 0x7);
@@ -310,6 +321,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_flush_by_asid() {
         let mut tlb = Tlb::new(4);
         tlb.insert(0x1, 0x10, 1, 0x7);
@@ -326,6 +338,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_flush_by_vpn_then_reinsert() {
         let mut tlb = Tlb::new(4);
         tlb.insert(0x100, 0x200, 1, 0x7);
@@ -340,6 +353,7 @@ mod tests {
     // ──────── MMU 集成测试 ────────
 
     #[test]
+    #[timeout(3000)]
     fn test_mmu_basic_translate() {
         let mut mmu = Mmu::new(4);
         mmu.current_asid = 1;
@@ -358,6 +372,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_mmu_page_fault() {
         let mut mmu = Mmu::new(4);
         mmu.current_asid = 1;
@@ -366,6 +381,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_mmu_asid_switch() {
         let mut mmu = Mmu::new(4);
         mmu.add_mapping(1, 0x100, 0x200, 0x7);
@@ -379,6 +395,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_mmu_flush_on_asid_switch() {
         let mut mmu = Mmu::new(4);
         mmu.add_mapping(1, 0x100, 0x200, 0x7);
@@ -398,6 +415,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_mmu_hit_rate() {
         let mut mmu = Mmu::new(4);
         mmu.current_asid = 0;
@@ -420,6 +438,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_mmu_thrashing() {
         // TLB 只有 2 个槽，但交替访问 3 个不同的页
         let mut mmu = Mmu::new(2);

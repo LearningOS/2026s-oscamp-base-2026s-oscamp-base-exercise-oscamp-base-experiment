@@ -62,11 +62,14 @@ impl<T> SpinLock<T> {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use std::sync::Arc;
     use std::thread;
 
     #[test]
+    #[timeout(3000)]
     fn test_basic_lock_unlock() {
         let lock = SpinLock::new(0u32);
         {
@@ -80,6 +83,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_try_lock() {
         let lock = SpinLock::new(0u32);
         assert!(lock.try_lock().is_some());
@@ -87,6 +91,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_concurrent_counter() {
         let lock = Arc::new(SpinLock::new(0u64));
         let mut handles = vec![];
@@ -112,6 +117,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_lock_protects_data() {
         let lock = Arc::new(SpinLock::new(Vec::new()));
         let mut handles = vec![];

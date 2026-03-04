@@ -73,11 +73,14 @@ impl<T> Drop for SpinGuard<'_, T> {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use std::sync::Arc;
     use std::thread;
 
     #[test]
+    #[timeout(3000)]
     fn test_guard_auto_release() {
         let lock = SpinLock::new(0u32);
         {
@@ -91,6 +94,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_guard_deref() {
         let lock = SpinLock::new(String::from("hello"));
         let guard = lock.lock();
@@ -99,6 +103,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_guard_deref_mut() {
         let lock = SpinLock::new(Vec::<i32>::new());
         {
@@ -112,6 +117,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_concurrent_with_guard() {
         let lock = Arc::new(SpinLock::new(0u64));
         let mut handles = vec![];
@@ -135,6 +141,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_panic_safety() {
         let lock = Arc::new(SpinLock::new(0u32));
         let l = Arc::clone(&lock);

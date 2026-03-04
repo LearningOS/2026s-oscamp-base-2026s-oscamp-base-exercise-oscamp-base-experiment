@@ -172,9 +172,12 @@ impl Default for Sv39PageTable {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[test]
+    #[timeout(3000)]
     fn test_extract_vpn() {
         // VA = 0x0000_003F_FFFF_F000 (最大的 39 位地址的页边界)
         // VPN[2] = 0xFF (bits 38:30)
@@ -187,6 +190,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_extract_vpn_simple() {
         // VA = 0x00000000 + page 1 = 0x1000
         // VPN[2] = 0, VPN[1] = 0, VPN[0] = 1
@@ -197,6 +201,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_extract_vpn_level2() {
         // VPN[2] = 1 means bit 30 set -> VA >= 0x40000000
         let va: u64 = 0x40000000;
@@ -206,6 +211,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_map_and_translate_single() {
         let mut pt = Sv39PageTable::new();
         // 映射：VA 0x1000 -> PA 0x80001000
@@ -216,6 +222,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_translate_with_offset() {
         let mut pt = Sv39PageTable::new();
         pt.map_page(0x2000, 0x90000000, PTE_V | PTE_R | PTE_W);
@@ -226,12 +233,14 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_translate_page_fault() {
         let pt = Sv39PageTable::new();
         assert_eq!(pt.translate(0x1000), TranslateResult::PageFault);
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_multiple_mappings() {
         let mut pt = Sv39PageTable::new();
         pt.map_page(0x0000_1000, 0x8000_1000, PTE_V | PTE_R);
@@ -244,6 +253,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_map_overwrite() {
         let mut pt = Sv39PageTable::new();
         pt.map_page(0x1000, 0x80001000, PTE_V | PTE_R);
@@ -254,6 +264,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_superpage_mapping() {
         let mut pt = Sv39PageTable::new();
         // 2MB 大页映射：VA 0x200000 -> PA 0x80200000
@@ -266,6 +277,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_superpage_and_normal_coexist() {
         let mut pt = Sv39PageTable::new();
         // 大页映射在第一个 2MB 区域

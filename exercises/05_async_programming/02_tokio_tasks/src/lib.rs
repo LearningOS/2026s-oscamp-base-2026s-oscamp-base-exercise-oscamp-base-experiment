@@ -33,28 +33,34 @@ pub async fn parallel_sleep_tasks(n: usize, duration_ms: u64) -> Vec<usize> {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use tokio::time::Instant;
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_squares_basic() {
         let result = concurrent_squares(5).await;
         assert_eq!(result, vec![0, 1, 4, 9, 16]);
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_squares_zero() {
         let result = concurrent_squares(0).await;
         assert!(result.is_empty());
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_squares_one() {
         let result = concurrent_squares(1).await;
         assert_eq!(result, vec![0]);
     }
 
     #[tokio::test]
+    #[timeout(3000)]
     async fn test_parallel_sleep() {
         let start = Instant::now();
         let result = parallel_sleep_tasks(5, 100).await;

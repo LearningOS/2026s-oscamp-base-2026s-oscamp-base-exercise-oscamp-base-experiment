@@ -104,9 +104,12 @@ pub fn check_permission(pte: u64, read: bool, write: bool, execute: bool) -> boo
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
 
     #[test]
+    #[timeout(3000)]
     fn test_make_pte_basic() {
         let pte = make_pte(0x12345, PTE_V | PTE_R | PTE_W);
         assert_eq!(extract_ppn(pte), 0x12345);
@@ -114,6 +117,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_make_pte_zero() {
         let pte = make_pte(0, 0);
         assert_eq!(pte, 0);
@@ -122,6 +126,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_make_pte_all_flags() {
         let all = PTE_V | PTE_R | PTE_W | PTE_X | PTE_U | PTE_G | PTE_A | PTE_D;
         let pte = make_pte(0xABC, all);
@@ -130,6 +135,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_make_pte_large_ppn() {
         let ppn = (1u64 << 44) - 1; // maximum PPN
         let pte = make_pte(ppn, PTE_V);
@@ -137,6 +143,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_is_valid() {
         assert!(is_valid(make_pte(1, PTE_V)));
         assert!(!is_valid(make_pte(1, PTE_R))); // R set but V not set
@@ -144,6 +151,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_is_leaf() {
         assert!(is_leaf(make_pte(1, PTE_V | PTE_R)));
         assert!(is_leaf(make_pte(1, PTE_V | PTE_X)));
@@ -154,6 +162,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_check_permission_read() {
         let pte = make_pte(1, PTE_V | PTE_R);
         assert!(check_permission(pte, true, false, false));
@@ -162,6 +171,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_check_permission_rw() {
         let pte = make_pte(1, PTE_V | PTE_R | PTE_W);
         assert!(check_permission(pte, true, true, false));
@@ -169,6 +179,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_check_permission_all() {
         let pte = make_pte(1, PTE_V | PTE_R | PTE_W | PTE_X);
         assert!(check_permission(pte, true, true, true));
@@ -177,6 +188,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_check_permission_invalid() {
         // V not set, should return false even if R/W/X flags present
         let pte = make_pte(1, PTE_R | PTE_W | PTE_X);

@@ -135,11 +135,14 @@ impl<T> Drop for RwLockWriteGuard<'_, T> {
 
 #[cfg(test)]
 mod tests {
+    use ntest_timeout::timeout;
+
     use super::*;
     use std::sync::Arc;
     use std::thread;
 
     #[test]
+    #[timeout(3000)]
     fn test_multiple_readers() {
         let lock = Arc::new(RwLock::new(0u32));
         let mut handles = vec![];
@@ -156,6 +159,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_writer_excludes_readers() {
         let lock = Arc::new(RwLock::new(0u32));
         let lock_w = Arc::clone(&lock);
@@ -169,6 +173,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_concurrent_reads_after_write() {
         let lock = Arc::new(RwLock::new(Vec::<i32>::new()));
         {
@@ -191,6 +196,7 @@ mod tests {
     }
 
     #[test]
+    #[timeout(3000)]
     fn test_concurrent_writes_serialized() {
         let lock = Arc::new(RwLock::new(0u64));
         let mut handles = vec![];
