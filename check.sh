@@ -116,21 +116,21 @@ for entry in "${exercises[@]}"; do
     if [ "$module" = "04_context_switch" ]; then
         if [ "$(uname -s)" = "Darwin" ]; then
             echo -e "${YELLOW}SKIP (macOS)${NC}"
-            ((SKIP++))
-        elif cargo test -p "$package" --target "$RISCV64_TARGET" --quiet -- --nocapture 2>/dev/null; then
+            ((SKIP += 1))
+        elif cargo test -p "$package" --lib --target "$RISCV64_TARGET" --quiet -- --nocapture 2>/dev/null; then
             echo -e "${GREEN}PASS${NC}"
-            ((PASS++))
+            ((PASS += 1))
         else
             echo -e "${RED}FAIL${NC}"
-            ((FAIL++))
+            ((FAIL += 1))
         fi
     else
-        if cargo test -p "$package" --quiet 2>/dev/null; then
+        if cargo test -p "$package" --lib --quiet 2>/dev/null; then
             echo -e "${GREEN}PASS${NC}"
-            ((PASS++))
+            ((PASS += 1))
         else
             echo -e "${RED}FAIL${NC}"
-            ((FAIL++))
+            ((FAIL += 1))
         fi
     fi
 done
