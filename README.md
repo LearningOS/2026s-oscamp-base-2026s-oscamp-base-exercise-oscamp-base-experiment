@@ -16,13 +16,19 @@ Learn Rust concurrency programming, async programming, `no_std` development, and
 - Rust toolchain (stable, >= 1.75)
 - Linux environment: most exercises target x86_64; **Module 4 (context switching) only supports riscv64** and requires a riscv64 environment or QEMU user-mode emulation
 
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+Install Rust with [rustup](https://rustup.rs/). On Ubuntu, install the native compiler, RISC-V compiler and QEMU user-mode emulator:
+
+```sh
+sudo apt-get update
+sudo apt-get install -y build-essential gcc-riscv64-linux-gnu qemu-user
+rustup target add riscv64gc-unknown-linux-gnu
 ```
+
+These commands refresh package metadata, install build/run dependencies, and add the Rust RISC-V target.
 
 ## Exercise Structure
 
-**6 modules, 23 exercises** in total, from easy to advanced:
+**6 modules, 24 exercises** in total, from easy to advanced:
 
 ### Module 1: Concurrency (Synchronous) — `01_concurrency_sync/`
 
@@ -60,7 +66,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 | 1 | `01_stack_coroutine` | Callee-saved registers, stack frames, context switching |
 | 2 | `02_green_threads` | Green thread scheduler, cooperative scheduling, yield |
 
-Module 4 only runs on **riscv64**. Run `./check.sh` or use the `oscamp` CLI as with the rest of the repository — no separate scripts needed. See `exercises/04_context_switch/README.md` for details.
+Module 4 only runs on **riscv64**. Run `./check.sh` or use the `oscamp` CLI as with the rest of the repository — no separate scripts needed. See `exercises/04_context_switch/` for details.
 
 ### Module 5: Async Programming — `05_async_programming/`
 
@@ -82,9 +88,12 @@ Module 4 only runs on **riscv64**. Run `./check.sh` or use the `oscamp` CLI as w
 
 ## Quick Start
 
+Replace `YOUR_GITHUB_LOGIN` with your own GitHub login. Clone the assignment returned by the enrollment application.
+
 ```bash
 # 1. Clone repository
-git clone <repo-url> && cd oscamp-base-experiment
+git clone https://github.com/LearningOS/2026s-oscamp-base-YOUR_GITHUB_LOGIN.git
+cd 2026s-oscamp-base-YOUR_GITHUB_LOGIN
 
 # 2. Build interactive CLI tool
 cargo build -p oscamp-cli
@@ -129,7 +138,7 @@ cargo test -p thread_spawn
 cargo test -p thread_spawn -- --nocapture
 
 # Check all exercises
-cargo test --workspace
+./target/debug/oscamp check
 ```
 
 ## Workflow
