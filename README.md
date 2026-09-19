@@ -1,5 +1,13 @@
 # OS Camp - Rust & OS Advanced Experiments
 
+## 领取春夏季作业仓库
+
+1. 加入 [2026 春夏季训练营](https://opencamp.cn/os2edu/camp/2026spring)，并绑定自己的 GitHub 账号。
+2. 点击[领取作业仓库](https://github.com/LearningOS/2026s-enroll/issues/new?template=base.yml)，提交申请并接受仓库邀请。
+3. 在回复的作业仓库中，按照下方教程完成实验并 push，在 Actions 和训练营网站查看成绩。
+
+已领取过本课程的学员继续使用原作业仓库。
+
 A Rust advanced and operating system introductory exercise repository in the style of [rustlings](https://github.com/rust-lang/rustlings).
 Learn Rust concurrency programming, async programming, `no_std` development, and operating system core concepts through completing code and passing tests.
 
@@ -136,7 +144,7 @@ cargo test --workspace
 
 Push to the `main` branch of your repository to trigger the scoring pipeline. GitHub Actions will automatically run all tests, calculate your score (out of 100), and upload it to the OpenCamp leaderboard.
 
-1. Accept the GitHub Classroom assignment link — this creates your personal repository
+1. [Request your course repository](https://github.com/LearningOS/2026s-enroll/issues/new?template=base.yml), then accept the repository invitation
 2. Complete exercises locally or in **GitHub Codespaces** (click "Code" > "Codespaces" > "Create")
 3. Commit and push your changes to `main`
 4. Check the "Actions" tab to see your score

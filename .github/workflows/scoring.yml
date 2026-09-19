@@ -1,4 +1,4 @@
-name: GitHub Classroom Workflow
+name: Spring course grading
 
 on:
   push:
@@ -13,6 +13,7 @@ env:
 
 jobs:
   build:
+    if: github.repository_owner == 'LearningOS' && github.repository != 'LearningOS/2026s-oscamp-base-2026s-oscamp-base-exercise-oscamp-base-experiment' && !startsWith(github.event.repository.name, 'preparing-') && github.event_name != 'pull_request' && vars.STUDENT_GITHUB != '' && github.actor == vars.STUDENT_GITHUB
     name: Autograding
     runs-on: ubuntu-latest
     container:
@@ -28,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install tools
-        run: apt-get update && apt-get install -y jq gcc-riscv64-linux-gnu qemu-user-static
+        run: apt-get update && apt-get install -y jq gcc-riscv64-linux-gnu qemu-user
 
       - name: Setup riscv64 target
         run: rustup target add riscv64gc-unknown-linux-gnu
